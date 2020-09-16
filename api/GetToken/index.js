@@ -4,7 +4,7 @@ module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
     if (!req.query.code) {
         context.res = {
-            body: "Need to provide a code"
+            body: process.env["redirect_uri"]
         };
     } else {
         response = await axios.post("https://api.login.yahoo.com/oauth2/get_token",
@@ -20,6 +20,7 @@ module.exports = async function (context, req) {
                 client_secret: process.env["client_secret"]
             }
         });
+        console.log(response);
         context.res = {
             // status: 200, /* Defaults to 200 */
             body: response.body
