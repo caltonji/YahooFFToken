@@ -17,7 +17,7 @@ const loginUrl = "https://api.login.yahoo.com/oauth2/request_auth_fe?response_ty
 const clientId = "dj0yJmk9QUJ2Yk1kQVdSbDZKJmQ9WVdrOVVXRmhXbGxtTm1zbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTM5";
 const clientSecret = "secret";
 const getTokenUrl = "https://api.login.yahoo.com/oauth2/get_token?client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=authorization_code&code=gkthgdm&redirect_uri=https://localhost:3000";
-const tokenUrl = "https://api.login.yahoo.com/oauth2/get_token";
+// const tokenUrl = "https://api.login.yahoo.com/oauth2/get_token";
 // headers: {
 //     'Content-Type': 'application/x-www-form-urlencoded'
 // },
