@@ -2,14 +2,27 @@ var axios = require('axios');
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
-
-    const name = (req.query.name || (req.body && req.body.name));
-    const responseMessage = name
-        ? "Hello, " + name + ". This HTTP triggered function executed successfully."
-        : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
-
-    context.res = {
-        // status: 200, /* Defaults to 200 */
-        body: responseMessage
-    };
+    if (!req.query.code) {
+        context.res = {
+            body: "Need to provide a code"
+        };
+    } else {
+        response = await axios.post("https://api.login.yahoo.com/oauth2/get_token",
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: {
+                grant_type: 'authorization_code',
+                code: req.query.code,
+                redirect_uri: process.env["redirect_uri"],
+                client_id: process.env["client_id"],
+                client_secret: process.env["client_secret"]
+            }
+        });
+        context.res = {
+            // status: 200, /* Defaults to 200 */
+            body: response.body
+        };
+    }
 }
