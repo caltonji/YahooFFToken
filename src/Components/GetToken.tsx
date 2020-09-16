@@ -12,6 +12,7 @@ interface IGetTokenState {
 }
 const redirectUri = "https://lemon-dune-0cd4b231e.azurestaticapps.net";
 
+
 const loginTitle = "Login with Yahoo! for Read Access";
 const loginUrl = "https://api.login.yahoo.com/oauth2/request_auth_fe?response_type=code&state=&client_id=dj0yJmk9QUJ2Yk1kQVdSbDZKJmQ9WVdrOVVXRmhXbGxtTm1zbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTM5&scope=&redirect_uri=" + redirectUri;
 const clientId = "dj0yJmk9QUJ2Yk1kQVdSbDZKJmQ9WVdrOVVXRmhXbGxtTm1zbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTM5";
@@ -21,7 +22,6 @@ const getTokenUrl = "https://api.login.yahoo.com/oauth2/get_token?client_id=" + 
 // headers: {
 //     'Content-Type': 'application/x-www-form-urlencoded'
 // },
-
 export default class GetLink extends React.Component<any, IGetTokenState> {
 
     constructor(props: any) {
