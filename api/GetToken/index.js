@@ -23,7 +23,7 @@ module.exports = async function (context, req) {
         console.log(response);
         context.res = {
             // status: 200, /* Defaults to 200 */
-            body: response.body
+            body: response
         };
     }
 }
