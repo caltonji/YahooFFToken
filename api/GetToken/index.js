@@ -5,6 +5,7 @@ const qs = require('qs');
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger  processed a request.');
     try {
+        axios.get("https://google.com");
         if (req.query.code) {
             let data = {
                 grant_type: 'authorization_code',
