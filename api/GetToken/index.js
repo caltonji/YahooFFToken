@@ -4,6 +4,10 @@ const qs = require('qs');
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger  processed a request.');
+    let randomData = {
+        "other": "you know"
+    };
+    qs.stringify(randomData);
     if (req.query.code) {
         let data = {
             grant_type: 'authorization_code',
