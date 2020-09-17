@@ -1,13 +1,10 @@
-
+var axios = require('axios');
+// require('dotenv').config()
+const querystring = require('querystring');
 
 module.exports = async function (context, req) {
-    var axios = require('axios');
-    var qs = require('qs');
-    
-    
     context.log('JavaScript HTTP trigger  processed a request.');
     try {
-        axios.get("https://google.com");
         if (req.query.code) {
             let data = {
                 grant_type: 'authorization_code',
@@ -16,7 +13,7 @@ module.exports = async function (context, req) {
                 client_id: process.env["client_id"],
                 client_secret: process.env["client_secret"]
             };
-            await axios.post("https://api.login.yahoo.com/oauth2/get_token", qs.stringify(data))
+            await axios.post("https://api.login.yahoo.com/oauth2/get_token", querystring.stringify(data))
             .then(response => { 
                 console.log("success");
                 context.res = {
@@ -40,7 +37,7 @@ module.exports = async function (context, req) {
                 client_id: process.env["client_id"],
                 client_secret: process.env["client_secret"]
             };
-            await axios.post("https://api.login.yahoo.com/oauth2/get_token", qs.stringify(data))
+            await axios.post("https://api.login.yahoo.com/oauth2/get_token", querystring.stringify(data))
             .then(response => { 
                 context.res = {
                     status: 200,
