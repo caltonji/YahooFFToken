@@ -1,5 +1,5 @@
 var axios = require('axios');
-// require('dotenv').config()
+// require('dotenv').config();
 const qs = require('qs');
 
 module.exports = async function (context, req) {
@@ -15,14 +15,14 @@ module.exports = async function (context, req) {
             };
             await axios.post("https://api.login.yahoo.com/oauth2/get_token", qs.stringify(data))
                 .then(response => { 
-                    console.log("success");
+                    context.log("success");
                     context.res = {
                         status: 200,
                         body: response.data
                     };
                 })
                 .catch(error => {
-                    console.log("failure");
+                    context.log("failure");
                     context.res = {
                         status: error.response.status,
                         body: error.response.data
@@ -51,6 +51,7 @@ module.exports = async function (context, req) {
                     };
                 });
         } else {
+            console.log("room");
             context.res = {
                 status: 400,
                 body: "Code or refresh token required"
