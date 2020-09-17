@@ -1,6 +1,6 @@
 var axios = require('axios');
 // require('dotenv').config()
-const querystring = require('querystring');
+const qs = require('qs');
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger  processed a request.');
@@ -13,22 +13,22 @@ module.exports = async function (context, req) {
                 client_id: process.env["client_id"],
                 client_secret: process.env["client_secret"]
             };
-            await axios.post("https://api.login.yahoo.com/oauth2/get_token", querystring.stringify(data))
-            .then(response => { 
-                console.log("success");
-                context.res = {
-                    status: 200,
-                    body: response.data
-                };
-            })
-            .catch(error => {
-                console.log("failure");
-                context.res = {
-                    status: error.response.status,
-                    body: error.response.data
-                };
-                console.log(error.response.data)
-            });
+            await axios.post("https://api.login.yahoo.com/oauth2/get_token", qs.stringify(data))
+                .then(response => { 
+                    console.log("success");
+                    context.res = {
+                        status: 200,
+                        body: response.data
+                    };
+                })
+                .catch(error => {
+                    console.log("failure");
+                    context.res = {
+                        status: error.response.status,
+                        body: error.response.data
+                    };
+                    console.log(error.response.data)
+                });
         } else if (req.query.refresh_token) {
             let data = {
                 grant_type: 'refresh_token',
@@ -37,19 +37,19 @@ module.exports = async function (context, req) {
                 client_id: process.env["client_id"],
                 client_secret: process.env["client_secret"]
             };
-            await axios.post("https://api.login.yahoo.com/oauth2/get_token", querystring.stringify(data))
-            .then(response => { 
-                context.res = {
-                    status: 200,
-                    body: response.data
-                };
-            })
-            .catch(error => {
-                context.res = {
-                    status: error.response.status,
-                    body: error.response.data
-                };
-            });
+            await axios.post("https://api.login.yahoo.com/oauth2/get_token", qs.stringify(data))
+                .then(response => { 
+                    context.res = {
+                        status: 200,
+                        body: response.data
+                    };
+                })
+                .catch(error => {
+                    context.res = {
+                        status: error.response.status,
+                        body: error.response.data
+                    };
+                });
         } else {
             context.res = {
                 status: 400,
