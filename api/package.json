@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
-    "dotnet": "^1.1.4",
     "qs": "^6.9.4"
   },
   "devDependencies": {}
