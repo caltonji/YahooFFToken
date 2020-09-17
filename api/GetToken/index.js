@@ -1,8 +1,10 @@
-var axios = require('axios');
-// require('dotenv').config()
-const qs = require('qs');
+
 
 module.exports = async function (context, req) {
+    var axios = require('axios');
+    var qs = require('qs');
+    
+    
     context.log('JavaScript HTTP trigger  processed a request.');
     try {
         axios.get("https://google.com");
