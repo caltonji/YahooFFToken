@@ -1,6 +1,7 @@
 import {
     Button,
-    TextField
+    TextField,
+    Grid
     }
     from '@material-ui/core';
 import * as React from 'react';
@@ -44,7 +45,8 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
         axios.get('/api/GetToken', {
             params: {
               code: code
-            }
+            },
+            baseURL: redirectUri
         })
         .then(function (response) {
             console.log(response);
@@ -56,19 +58,25 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
 
     public render() {
         return (
-            <div>
-                <Button variant="contained" color="primary" href={loginUrl}>
+            <Grid
+                container
+                direction="column"
+                justify="space-between"
+                alignItems="center"
+                >
+                <Button className="GetToken-login-button" variant="contained" color="primary" href={loginUrl}>
                     {loginTitle}
                 </Button>
                 <TextField
+                    className="GetToken-text"
                     id="filled-multiline-flexible"
-                    label="Multiline"
+                    label="Access Token"
                     multiline
-                    rowsMax={4}
+                    rows={4}
                     value={this.state.token}
                     variant="filled"
                     />
-            </div>
+            </Grid>
         );
     }
 }
