@@ -49,6 +49,12 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
                     refreshToken: refreshToken,
                     expirationTime: expirationTimeEpoch
                 });
+                const ttl = expirationTimeEpoch - new Date().getTime();
+                if (ttl > 0) {
+                    setTimeout(() => {
+                        this.forceUpdate();
+                    }, ttl);
+                }
             }
         }
     }
