@@ -24,10 +24,6 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
 
     constructor(props: any) {
         super(props);
-        let queryParams = qs.parse(window.location.search, { ignoreQueryPrefix: true })
-        if (queryParams.code) {
-            this.get_token(queryParams.code.toString());
-        }
 
         this.state = {
             accessToken: "",
