@@ -11,7 +11,7 @@ import './GetToken.css';
 
 interface IGetTokenState {
     accessToken: string,
-    expirationTime: Date,
+    expirationTime: number,
     refreshToken: string
 }
 const loginTitle = "Login with Yahoo! for Read Access";
@@ -27,15 +27,32 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
 
         this.state = {
             accessToken: "",
-            expirationTime: new Date(),
+            expirationTime: new Date().getTime(),
             refreshToken: ""
         }
     }
 
     componentDidMount() {
-        let queryParams = qs.parse(window.location.search, { ignoreQueryPrefix: true })
+        let queryParams = qs.parse(window.location.search, { ignoreQueryPrefix: true });
         if (queryParams.code) {
+            window.history.pushState({}, document.title, "/");
             this.get_token(queryParams.code.toString());
+        } else {
+            let accessToken = localStorage.getItem("accessToken");
+            let refreshToken = localStorage.getItem("refreshToken");
+            const expirationTimeString = localStorage.getItem("expirationTime")
+            if (expirationTimeString && accessToken && refreshToken) {
+                let expirationTimeEpoch: number = Date.parse(expirationTimeString);
+                if (expirationTimeEpoch < new Date().getTime()) {
+                    this.refresh_token(refreshToken);
+                } else {
+                    this.setState({
+                        accessToken: accessToken,
+                        refreshToken: refreshToken,
+                        expirationTime: expirationTimeEpoch
+                    });
+                }
+            }
         }
     }
 
@@ -56,10 +73,16 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
         });
     }
 
-    private refresh_token = () => {
+    private refresh_token = (refreshToken: string) => {
+        // clear current state
+        this.setState({
+            accessToken: "",
+            expirationTime: new Date().getTime(),
+            refreshToken: ""
+        });
         axios.get('/api/GetToken', {
             params: {
-              refresh_token: this.state.refreshToken
+              refresh_token: refreshToken
             }
         })
         .then( (response) => {
@@ -78,14 +101,17 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
         this.setState({
             accessToken: tokenData["access_token"],
             refreshToken: tokenData["refresh_token"],
-            expirationTime: expirationTime
+            expirationTime: expirationTime.getTime()
         });
+        localStorage.setItem("accessToken", tokenData["access_token"]);
+        localStorage.setItem("refreshToken", tokenData["refresh_token"]);
+        localStorage.setItem("expirationTime", expirationTime.toString());
     }
 
     public render() {
         if (this.state && this.state.expirationTime && this.state.refreshToken
-            && this.state.expirationTime <= new Date()) {
-                this.refresh_token();
+            && this.state.expirationTime < new Date().getTime()) {
+                this.refresh_token(this.state.refreshToken);
         }
         return (
             <Grid
