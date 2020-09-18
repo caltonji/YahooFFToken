@@ -1,24 +1,21 @@
 const qs = require('qs');
 // require('dotenv').config();
 
-module.exports = async function (context) {
+module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger  processed a request.');
-    if (context.req.query.code) {
+    context.log('Node.js HTTP trigger function processed a request. RequestUri=%s', req.originalUrl);
+
+    if (req.query.code || (req.code && req.body.code)) {
         context.res = {
-            status: 200,
-            body: context.req.query.code
+            // status defaults to 200 */
+            body: "Hello " + (req.query.code || req.body.code)
         };
-        // let data = {
-        //     grant_type: 'authorization_code',
-        //     code: eq.query.code,
-        //     redirect_uri: process.env["redirect_uri"],
-        //     client_id: process.env["client_id"],
-        //     client_secret: process.env["client_secret"]
-        // };
-        // context.log(data);
-        // context.res = {
-        //     status: 200,
-        //     body: qs.stringify(data)
-        // };
     }
+    else {
+        context.res = {
+            status: 400,
+            body: "Please pass a name on the query string or in the request body"
+        };
+    }
+    context.done();
 }
