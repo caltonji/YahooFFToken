@@ -34,6 +34,7 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
 
     componentDidMount() {
         let queryParams = qs.parse(window.location.search, { ignoreQueryPrefix: true });
+        // if a code is provided in url, use that. Else try filling state with localStorage
         if (queryParams.code) {
             window.history.pushState({}, document.title, "/");
             this.get_token(queryParams.code.toString());
@@ -43,15 +44,11 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
             const expirationTimeString = localStorage.getItem("expirationTime")
             if (expirationTimeString && accessToken && refreshToken) {
                 let expirationTimeEpoch: number = Date.parse(expirationTimeString);
-                if (expirationTimeEpoch < new Date().getTime()) {
-                    this.refresh_token(refreshToken);
-                } else {
-                    this.setState({
-                        accessToken: accessToken,
-                        refreshToken: refreshToken,
-                        expirationTime: expirationTimeEpoch
-                    });
-                }
+                this.setState({
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                    expirationTime: expirationTimeEpoch
+                });
             }
         }
     }
@@ -106,6 +103,9 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
         localStorage.setItem("accessToken", tokenData["access_token"]);
         localStorage.setItem("refreshToken", tokenData["refresh_token"]);
         localStorage.setItem("expirationTime", expirationTime.toString());
+        setTimeout(() => {
+            this.forceUpdate();
+        }, tokenData.expires_in * 1000);
     }
 
     public render() {
