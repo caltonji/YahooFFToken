@@ -6,7 +6,7 @@ module.exports = async function (context, req) {
     if (req.query.code) {
         let data = {
             grant_type: 'authorization_code',
-            code: req.query.code,
+            code: String(req.query.code),
             redirect_uri: process.env["redirect_uri"],
             client_id: process.env["client_id"],
             client_secret: process.env["client_secret"]
