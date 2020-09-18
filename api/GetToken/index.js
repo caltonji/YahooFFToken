@@ -1,5 +1,5 @@
 var axios = require('axios');
-// require('dotenv').config();
+require('dotenv').config();
 const qs = require('qs');
 
 module.exports = async function (context, req) {

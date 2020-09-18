@@ -16,6 +16,7 @@ interface IGetTokenState {
 }
 const loginTitle = "Login with Yahoo! for Read Access";
 
+const apiUri = "http://localhost:7071/api/GetToken"
 const redirectUri = "https://lemon-dune-0cd4b231e.azurestaticapps.net";
 const clientId = "dj0yJmk9QUJ2Yk1kQVdSbDZKJmQ9WVdrOVVXRmhXbGxtTm1zbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTM5";
 const loginUrl = "https://api.login.yahoo.com/oauth2/request_auth?response_type=code&state=&client_id=" + clientId + "&scope=&redirect_uri=" + redirectUri;
@@ -48,9 +49,9 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
         console.log(code);
         axios.get('/api/GetToken', {
             params: {
-              code: code
+              yahoo_code: code
             },
-            baseURL: redirectUri
+            baseURL: apiUri
         })
         .then( (response) => {
             console.log(response);
