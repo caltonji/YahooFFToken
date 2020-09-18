@@ -1,7 +1,8 @@
 import {
     Button,
     TextField,
-    Grid
+    Grid,
+    CircularProgress
     }
     from '@material-ui/core';
 import * as React from 'react';
@@ -12,7 +13,8 @@ import './GetToken.css';
 interface IGetTokenState {
     accessToken: string,
     expirationTime: number,
-    refreshToken: string
+    refreshToken: string,
+    loading: boolean
 }
 const loginTitle = "Login with Yahoo! for Read Access";
 
@@ -28,7 +30,8 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
         this.state = {
             accessToken: "",
             expirationTime: new Date().getTime(),
-            refreshToken: ""
+            refreshToken: "",
+            loading: false
         }
     }
 
@@ -62,6 +65,9 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
     private get_token = (code: string) => {
         console.log("getting token");
         console.log(code);
+        this.setState({
+            loading: true
+        });
         axios.get('/api/GetToken', {
             params: {
               yahoo_code: code
@@ -71,8 +77,18 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
             console.log(response);
             this.updateTokenData(response.data);
         })
-        .catch(function (error) {
+        .catch( (error) => {
             console.log(error);
+            this.clearState();
+        });
+    }
+
+    private clearState = () => {
+        this.setState({
+            accessToken: "",
+            expirationTime: new Date().getTime(),
+            refreshToken: "",
+            loading: false
         });
     }
 
@@ -81,7 +97,8 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
         this.setState({
             accessToken: "",
             expirationTime: new Date().getTime(),
-            refreshToken: ""
+            refreshToken: "",
+            loading: true
         });
         axios.get('/api/GetToken', {
             params: {
@@ -92,8 +109,9 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
             console.log(response);
             this.updateTokenData(response.data);
         })
-        .catch(function (error) {
+        .catch( (error) => {
             console.log(error);
+            this.clearState();
         });
     }
 
@@ -104,7 +122,8 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
         this.setState({
             accessToken: tokenData["access_token"],
             refreshToken: tokenData["refresh_token"],
-            expirationTime: expirationTime.getTime()
+            expirationTime: expirationTime.getTime(),
+            loading: false
         });
         localStorage.setItem("accessToken", tokenData["access_token"]);
         localStorage.setItem("refreshToken", tokenData["refresh_token"]);
@@ -129,7 +148,8 @@ export default class GetLink extends React.Component<any, IGetTokenState> {
                 <Button className="GetToken-login-button" variant="contained" color="primary" href={loginUrl}>
                     {loginTitle}
                 </Button>
-                <TextField
+                { this.state.loading &&<CircularProgress className="GetToken-spinner"/> }
+                    <TextField
                     className="GetToken-text"
                     id="filled-multiline-flexible"
                     label="Access Token"
