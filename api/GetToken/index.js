@@ -1,6 +1,5 @@
-var axios = require('axios');
-// require('dotenv').config();
 const qs = require('qs');
+// require('dotenv').config();
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger  processed a request.');
@@ -16,21 +15,5 @@ module.exports = async function (context, req) {
             status: 200,
             body: qs.stringify(data)
         };
-        // await axios.post("https://api.login.yahoo.com/oauth2/get_token", qs.stringify(data))
-        //     .then(response => { 
-        //         context.log("success");
-        //         context.res = {
-        //             status: 200,
-        //             body: response.data
-        //         };
-        //     })
-        //     .catch(error => {
-        //         context.log("failure");
-        //         context.res = {
-        //             status: error.response.status,
-        //             body: error.response.data
-        //         };
-        //         console.log(error.response.data)
-        //     });
     }
 }
