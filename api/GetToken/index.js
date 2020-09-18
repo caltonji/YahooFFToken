@@ -14,7 +14,7 @@ module.exports = async function (context, req) {
         };
         context.res = {
             status: 200,
-            body:  qs.stringify(data)
+            body: qs.stringify(data)
         };
         // await axios.post("https://api.login.yahoo.com/oauth2/get_token", qs.stringify(data))
         //     .then(response => { 

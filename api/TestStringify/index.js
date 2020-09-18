@@ -1,5 +1,5 @@
 const qs = require('qs');
-require('dotenv').config();
+// require('dotenv').config();
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger  processed a request.');
