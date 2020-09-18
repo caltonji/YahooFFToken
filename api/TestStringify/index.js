@@ -1,12 +1,12 @@
 const qs = require('qs');
 // require('dotenv').config();
 
-module.exports = async function (context, req) {
+module.exports = async function (context) {
     context.log('JavaScript HTTP trigger  processed a request.');
-    if (req.query.code) {
+    if (context.req.query.code) {
         context.res = {
             status: 200,
-            body: req.query.code
+            body: context.req.query.code
         };
         // let data = {
         //     grant_type: 'authorization_code',
